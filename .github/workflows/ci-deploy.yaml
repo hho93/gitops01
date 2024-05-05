@@ -5,16 +5,16 @@ name: Build Step
 
 on:
   push:
-    branches: ['master']
+    branches: ['main']
 #   pull_request:
-#     branches: [ "master" ]
+#     branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.20.0]
+        node-version: [18.17.0]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -71,10 +71,10 @@ jobs:
           context: ./
           # Note: tags has to be all lower-case
           tags: |
-            imrishav/gitops:${{ github.sha }}
-            ghcr.io/imrishav/gitops:${{ github.sha }}
+            hhostudioai/gitops:${{ github.sha }}
+            ghcr.io/hho93/gitops:${{ github.sha }}
           # build on feature branches, push only on main branch
-          push: ${{ github.ref == 'refs/heads/master' }}
+          push: ${{ github.ref == 'refs/heads/main' }}
 
   update-manifest-stage:
     runs-on: ubuntu-latest
@@ -82,16 +82,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: imrishav/gitops-infra
-          ref: 'master'
+          repository: hho93/gitops-infra
+          ref: 'main'
           token: ${{ secrets.G_TOKEN }}
       - name: setup git config
         run: |
-          git config --global user.email "rishav@live.co.uk"
-          git config --global user.name "imrishav"
+          git config --global user.email "hho@studioai.build"
+          git config --global user.name "hho93"
           echo ${{ github.sha }}
           sed -i "s#${{ github.actor }}.*#${{ github.actor }}/gitops01:${{ github.sha }}#g" deployment.yaml
           git add -A
           git commit -am "Update image for - ${{ github.sha }}"
       - run: echo ${{ github }}
-      - run: git push origin master
+      - run: git push origin main
