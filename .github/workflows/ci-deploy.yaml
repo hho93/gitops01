@@ -39,9 +39,6 @@ jobs:
     name: Build Docker image and push to repositories
     # run only when code is compiling and tests are passing
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     needs: ['build', 'test-stage']
 
     # steps to perform in job
@@ -61,14 +58,14 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Login to Github Packages
-        uses: docker/login-action@v3
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.G_TOKEN }}
 
       - name: Build image and push to Docker Hub and GitHub Container Registry
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v2
         with:
           # relative path to the place where source code with Dockerfile is located
           context: ./
@@ -78,8 +75,6 @@ jobs:
             ghcr.io/hho93/gitops:${{ github.sha }}
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
-          secrets: |
-            GIT_AUTH_TOKEN=${{ secrets.G_TOKEN }}
 
   update-manifest-stage:
     runs-on: ubuntu-latest
