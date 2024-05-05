@@ -78,6 +78,8 @@ jobs:
             ghcr.io/hho93/gitops:${{ github.sha }}
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
+          secrets: |
+            GIT_AUTH_TOKEN=${{ secrets.G_TOKEN }}
 
   update-manifest-stage:
     runs-on: ubuntu-latest
