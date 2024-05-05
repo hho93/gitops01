@@ -7,7 +7,7 @@ function App() {
       <header className='App-header'>
         <img src={logo} className='App-logo' alt='logo' />
         <div style={{ fontSize: 30 }}>
-          Version <span style={{ color: 'red' }}>Auto-Sync Testing</span>
+          Version <span style={{ color: 'red' }}>Final Testing</span>
         </div>
       </header>
     </div>
